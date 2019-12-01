@@ -4,25 +4,24 @@
     <%- include('partials/head') %>
   </head>
   <body>
-    <form>
-      <textarea></textarea>
-      <button class="btn btn-primary">Tweeeeet</button>
+    <h1>Tweeter - A Twitter Like Clone</h1>
+    <form class="tweeter-form">
+      <label for="name">Name:</label>
+      <input class="u-full-width" type="text" id="name" name="name" />
+      <label for="tweeter">What's on your mind:</label>
+      <input class="u-full-width" type="text" id="tweeter" name="tweeter" />
+      <button class="btn button-primary">Chirp!</button>
     </form>
-
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
+    <div class="chirps">
+      <div class="chirp">
+        <div class="name">Name:<span>Some name</span></div>
+        <div class="chirp-message">Chirp:<span>Some chirp</span></div>
+      </div>
+      <div class="chirp">
+        <div class="name">Name:<span>Some name</span></div>
+        <div class="chirp-message">Chirp:<span>Some chirp</span></div>
+      </div>
+    </div>
+    <script type="text/javascript" src="js/client.js"></script>
   </body>
 </html>

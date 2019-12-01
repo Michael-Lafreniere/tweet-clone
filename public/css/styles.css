@@ -1,0 +1,23 @@
+h1 {
+  text-align: center;
+}
+
+.tweeter-form {
+  width: 35%;
+  margin: 0 auto;
+}
+
+.chirps {
+  width: 35%;
+  margin: 0 auto;
+}
+
+.chirp {
+  border: 1px solid rgba(175, 175, 175, 175);
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 2%;
+}
+
+.name {
+ 
