@@ -20,4 +20,10 @@ h1 {
 }
 
 .name {
- 
+}
+
+.loading {
+  text-align: center;
+  width: 35%;
+  margin: 0 auto;
+}
