@@ -33,25 +33,8 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname + '/public/views'));
 app.set('port', PORT);
 app.use(cors());
-// app.use((req, res, next) => {
-//   // Website you wish to allow to connect
-//   // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-//   // Request methods you wish to allow
-//   // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//   // Request headers you wish to allow
-//   res.setHeader(
-//     'Access-Control-Allow-Headers',
-//     'X-Requested-With,content-type'
-//   );
-//   // Set to true if you need the website to include cookies in the requests sent
-//   // to the API (e.g. in case you use sessions)
-//   res.setHeader('Access-Control-Allow-Credentials', true);
-//   // Pass to next layer of middleware
-//   next();
-// });
 app.use(express.static(path.join(__dirname + '/public')));
 app.use(express.json());
-//app.use(express.urlencoded());
 // Check for production setup:
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
@@ -75,11 +58,6 @@ connection.connect(error => {
   if (error) throw error;
   console.log(`Connected to ${SQL_DATABASE}`);
 });
-// Double check the connection:
-// connection.query('SELECT 1 + 1 AS solution', (error, results, fields) => {
-//   if (error) throw error;
-//   console.log('The solution is: ', results[0].solution);
-// });
 
 //
 // Handle the default route:
@@ -88,8 +66,11 @@ app.get('/', (req, res) => {
   res.render('index', {});
 });
 
-app.get('/chirps', (req, res) => {
-  res.json({ message: 'chirp chirp!' });
+app.get('/chirp', (req, res) => {
+  const query = 'SELECT * FROM chirp LIMIT 25';
+  connection.query(query, (err, results) => {
+    res.json(results);
+  });
 });
 
 const isValidChirp = data => {
@@ -104,16 +85,27 @@ const isValidChirp = data => {
   return false;
 };
 
-app.post('/post', (req, res) => {
+app.post('/chirp', (req, res) => {
   if (isValidChirp(req.body)) {
     const chirp = {
       name: req.body.name.toString(),
-      chirp: req.body.chirp.toString(),
-      ip: req.ip.toString()
+      post: req.body.chirp.toString(),
+      //ip: req.ip.toString(),
+      date: new Date()
+        .toISOString()
+        .slice(0, 19)
+        .replace('T', ' ')
     };
-    console.log('chirp:', chirp);
+
+    const query = `INSERT INTO chirp (name, post, date) VALUES ('${chirp.name}', '${chirp.post}', '${chirp.date}');`;
+    connection.query(query, (err, results) => {
+      if (err !== null) {
+        console.log('error:', err);
+      }
+    });
+
     req.setTimeout(0);
-    res.status(200);
+    res.status(200).json(chirp);
   } else {
     res.status(422).send({ message: 'Requires a name and a message.' });
   }
