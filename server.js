@@ -88,26 +88,56 @@ app.get('/', (req, res) => {
   res.render('index', {});
 });
 
-// app.get('/chirps', (req, res) => {
-//   res.json({ message: 'chirp chirp!' });
-// });
+app.get('/chirps', (req, res) => {
+  res.json({ message: 'chirp chirp!' });
+});
+
+const isValidChirp = data => {
+  if (
+    data.name &&
+    data.name.toString().trim() !== '' &&
+    data.chirp &&
+    data.chirp.toString().trim() !== ''
+  ) {
+    return true;
+  }
+  return false;
+};
 
 app.post('/post', (req, res) => {
-  console.log(req.body());
+  if (isValidChirp(req.body)) {
+    const chirp = {
+      name: req.body.name.toString(),
+      chirp: req.body.chirp.toString(),
+      ip: req.ip.toString()
+    };
+    console.log('chirp:', chirp);
+    req.setTimeout(0);
+    res.status(200);
+  } else {
+    res.status(422).send({ message: 'Requires a name and a message.' });
+  }
 });
 
 //
 // Error handing needs to be after routes:
 //
-app.use((req, res, next) => {
-  const error = new Error('Page not found.');
-  error.status = 404;
-  next(error);
+app.get('*', function(req, res, next) {
+  let err = new Error(`${req.ip} tried to reach ${req.originalUrl}`); // Tells us which IP tried to reach a particular URL
+  err.statusCode = 404;
+  err.shouldRedirect = true; //New property on err so that our middleware will redirect
+  next(err);
 });
 
-app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.render('error', { status: err.status, message: err.message });
+app.use(function(err, req, res, next) {
+  console.error(err.message);
+  if (!err.statusCode) err.statusCode = 500; // Sets a generic server error status code if none is part of the err
+
+  if (err.shouldRedirect) {
+    res.render('error', { status: err.statusCode, message: err.message }); // Renders a myErrorPage.html for the user
+  } else {
+    res.status(err.statusCode).send(err.message); // If shouldRedirect is not defined in our error, sends our original err data
+  }
 });
 
 //
