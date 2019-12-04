@@ -3,6 +3,8 @@ const assert = require('assert');
 const path = require('path');
 const mysql = require('mysql2');
 const cors = require('cors');
+const filter = require('bad-words');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const app = express();
@@ -36,13 +38,13 @@ app.use(cors());
 app.use(express.static(path.join(__dirname + '/public')));
 app.use(express.json());
 // Check for production setup:
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static('client/build'));
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
+//   app.get('*', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+//   });
+// }
 
 //
 // Connect to MySQL DB:
@@ -85,11 +87,16 @@ const isValidChirp = data => {
   return false;
 };
 
+//
+// Rate limit posts:
+//
+app.use(rateLimit({ windowMs: 30 * 1000, max: 5 }));
+
 app.post('/chirp', (req, res) => {
   if (isValidChirp(req.body)) {
     const chirp = {
-      name: req.body.name.toString(),
-      post: req.body.chirp.toString(),
+      name: filter.clean(req.body.name.toString()),
+      post: filter.clean(req.body.chirp.toString()),
       //ip: req.ip.toString(),
       date: new Date()
         .toISOString()
