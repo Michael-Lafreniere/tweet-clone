@@ -3,11 +3,12 @@ const assert = require('assert');
 const path = require('path');
 const mysql = require('mysql2');
 const cors = require('cors');
-const filter = require('bad-words');
+const Filter = require('bad-words');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const app = express();
+const filter = new Filter();
 
 const {
   NODE_ENV,

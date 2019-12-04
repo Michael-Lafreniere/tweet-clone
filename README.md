@@ -6,6 +6,8 @@
 
 A very simple twitter like clone. The site uses [bad-words](https://www.npmjs.com/package/bad-words) to filter user names and messages along with [express-rate-limit](https://www.npmjs.com/package/express-rate-limit) to stop flooding of messages. It will only show the last 25 messages posted and there is no verification of usernames. I made this as a proof-of-concept before moving on to a larger twitter clone with user authentication, post editing, character limiting (each message has a size limit) liking/disliking/etc of posts and more. That will be done under a different repository though to keep the projects separate.
 
+![Tweet clone](https://github.com/Michael-Lafreniere/tweet-clone/blob/master/Screenshot.png 'image of the site')
+
 ## Technology used
 
 Below are the primary modules I used to create this project along with the [MySQL](https://hub.docker.com/_/mysql/) database running in a [Docker](https://www.docker.com) container
