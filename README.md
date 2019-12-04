@@ -26,7 +26,7 @@ Below are the primary modules I used to create this project along with the [MySQ
 
 [node.js](http://nodejs.org/download/) is required to get `npm`. Use the package manager [npm](https://www.npmjs.com) to install and run this code. It is highly recommended to also have [git](https://git-scm.com) installed to make the cloning easier.
 
-I provided a example [.env]() file with the project
+I provided a example [.env](https://github.com/Michael-Lafreniere/tweet-clone/blob/master/.env.examplegit co) file with the project
 
 ```
 # Clones the repository:
